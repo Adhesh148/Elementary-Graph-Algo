@@ -13,6 +13,11 @@ using namespace std;
 
 // typedef pair<int, int> pairs; 
 
+bool comparePairs(const std::pair<pair<int,int>,int>& lhs, const std::pair<pair<int,int>,int>& rhs)
+{
+  return lhs.second > rhs.second;
+}
+
 int main()
 {
 	// pair<pair<int,int>,int> p;
@@ -33,7 +38,7 @@ int main()
 	
 
 
-	sort(v.begin(), v.end(),[](auto const &a, auto const &b) { return a.second > b.second;});
+	sort(v.begin(), v.end(),comparePairs);
 
 
 	for(int i=0;i<5;++i)

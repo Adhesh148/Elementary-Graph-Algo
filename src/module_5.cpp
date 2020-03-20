@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "Graph.h"
 
+bool comparePairs(const std::pair<pair<int,int>,int>& lhs, const std::pair<pair<int,int>,int>& rhs)
+{
+  return lhs.second > rhs.second;
+}
+
 // Find MST in an undirected connected graph
 void Graph:: MST_Kruskal()
 {
@@ -21,7 +26,7 @@ void Graph:: MST_Kruskal()
 		}
 	}
 
-	sort(v.begin(), v.end(),[](auto const &a, auto const &b) { return a.second < b.second;});
+	sort(v.begin(), v.end(),comparePairs);
 
 	Edge MST_edges[1];
 	int iter =0,mst_weight=0;
