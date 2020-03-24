@@ -113,7 +113,7 @@ void Graph:: BFS_Path(int s,Graph* G)
 
 	//Instantiate a new Graph to keep track of the bfs tree
 	Edge tree_edges[1];
-	Graph bfs_tree({},G->cnt_vertices,0,0);	//undirected tree having 0 edges
+	Graph bfs_tree(NULL,G->cnt_vertices,0,0);	//undirected tree having 0 edges
 
 	while(!Q.empty())
 	{
@@ -186,14 +186,12 @@ void Graph:: LPATH_DAG(int s) 	// FOR DAG.
 	{
 		int u = Stack.top();
 		Stack.pop();
-
 		if(dist[u]!=NINF)
 		{
 			for(int v=0;v<cnt_vertices;++v)
 				if((adjMatrix[u][v] != 0) && (dist[v]<(dist[u]+adjMatrix[u][v])))
 					dist[v] = dist[u]+adjMatrix[u][v];
 		}
-		
 	}
 
 	cout << "LPATH from "<<s<<" to"<<endl;
@@ -205,31 +203,32 @@ void Graph:: LPATH_DAG(int s) 	// FOR DAG.
 			cout << i<<" "<<dist[i]<<endl;
 	}
 
-	// Find the LPATH - find vertex with max LPATH and findPATH for the source and that vertex
-	// Edge tree_edges[1];
-	// Graph tree({},cnt_vertices,0,1);
-	// for(int i=0;i<cnt_vertices;++i)
-	// {
-	// 	for(int j=0;j<cnt_vertices;++j)
-	// 	{	
-	// 		tree_edges[0].u = i;
-	// 		tree_edges[0].v = j;
-	// 		tree_edges[0].w = adjMatrix[i][j];
-	// 		if(adjMatrix[i][j]!=0)
-	// 			tree_edges[0].w = 1;
-	// 		tree.AddEdge(tree_edges,1,1);
-	// 	}
-	// }
+	/*
+	//Find the LPATH - find vertex with max LPATH and findPATH for the source and that vertex
+	Edge tree_edges[1];
+	Graph tree({},cnt_vertices,0,1);
+	for(int i=0;i<cnt_vertices;++i)
+	{
+		for(int j=0;j<cnt_vertices;++j)
+		{	
+			tree_edges[0].u = i;
+			tree_edges[0].v = j;
+			tree_edges[0].w = adjMatrix[i][j];
+			if(adjMatrix[i][j]!=0)
+				tree_edges[0].w = 1;
+			tree.AddEdge(tree_edges,1,1);
+		}
+	}
 
-	// fill(visit,visit+cnt_vertices,0);
-	// queue<int> path;
-	// findPath(1,4,tree,path);
+	fill(visit,visit+cnt_vertices,0);
+	queue<int> path;
+	findPath(1,4,tree,path);
+	*/
 }
 
 void Graph:: topologicalSort(stack<int> &Stack)
 {
 	fill(visit,visit+cnt_vertices,0);
-
 	for(int i=0;i<cnt_vertices;++i)
 		if(visit[i] == 0)
 			topologicalSortDFS(i,Stack);
@@ -286,4 +285,52 @@ int Graph :: BFS_LPATH(int s)
 		}
 	}
 	return max_index;
+}
+
+bool comparePairsDesc(const std::pair<pair<int,int>,int>& lhs, const std::pair<pair<int,int>,int>& rhs)
+{
+  return lhs.second > rhs.second;		// Change sign to get MAX_WEIGHT_SPAN_TREE
+}
+
+void Graph:: MAX_WEIGHT_MST()
+{
+	Graph MST(NULL,cnt_vertices,0,0);	// undirected MST
+
+	vector<pair<pair<int,int>,int>> v(cnt_edges);		// Make pairs of ((u,v),w), then sort by w.
+	int cnt = 0;
+
+	for(int i=0;i<cnt_vertices;++i)
+	{	
+		for(int j=0;j<i;++j)						// Considering only one half of adjMatrix since it is an undirected graph
+		{
+			if(adjMatrix[i][j] !=0)			 
+			{
+				v[cnt].first = make_pair(i,j);
+				v[cnt++].second = adjMatrix[i][j];
+			}
+		}
+	}
+
+	sort(v.begin(), v.end(),comparePairsDesc);
+
+	Edge MST_edges[1];
+	int iter =0,mst_weight=0;
+	while(MST.cnt_edges!=(cnt_vertices-1))
+	{
+		MST_edges[0].u = v[iter].first.first;
+		MST_edges[0].v = v[iter].first.second;
+		MST_edges[0].w = v[iter].second;
+		MST.AddEdge(MST_edges,1,0);
+
+		if(isCycle(MST) == 1)
+			MST.DeleteEdge(MST_edges[0].u,MST_edges[0].v,0);		// parameters are (u,v,directed?)
+		else
+			mst_weight = mst_weight+MST_edges[0].w;
+
+		++iter;
+	}
+
+	MST.PrintGraph();
+	cout << mst_weight<<endl;
+
 }

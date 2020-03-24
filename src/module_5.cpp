@@ -9,7 +9,7 @@ bool comparePairs(const std::pair<pair<int,int>,int>& lhs, const std::pair<pair<
 // Find MST in an undirected connected graph
 void Graph:: MST_Kruskal()
 {
-	Graph MST({},cnt_vertices,0,0);	// undirected MST
+	Graph MST(NULL,cnt_vertices,0,0);	// undirected MST
 
 	vector<pair<pair<int,int>,int>> v(cnt_edges);		// Make pairs of ((u,v),w), then sort by w.
 	int cnt = 0;
@@ -82,7 +82,7 @@ bool Graph:: DFS_test_cycle(Graph MST,int s,int parent)
 
 void Graph:: MST_Prim()
 {
-	Graph MST({},cnt_vertices,0,0);	// undirected MST 
+	Graph MST(NULL,cnt_vertices,0,0);	// undirected MST 
 	Edge MST_edges[1];
 
 	int mst_weight=0;

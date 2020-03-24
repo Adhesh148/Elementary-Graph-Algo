@@ -137,6 +137,8 @@ public:
 
 	void LPATH_TREE();
 
+	void MAX_WEIGHT_MST();
+
 
 	//-------MODUDLE-4-------//
 
