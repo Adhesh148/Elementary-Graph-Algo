@@ -18,10 +18,10 @@ private:
 	void DFS_Bridges(int s);
 
 	// BFS for finding ShortestPath
-	void BFS_Path(int s);
+	void BFS_Path(int s,Graph* G);
 
 	// Find Path b/w two vertices in a Tree(graph)
-	void findPath(int u,int v,Graph bfs_tree,queue<int> path);
+	void findPath(int u,int v,Graph bfs_tree,queue<int> path,Graph* G);
 
 	//Topological Sorting for DAG PATHS
 	void topologicalSort(stack<int> &Stack);
@@ -36,7 +36,7 @@ private:
 	bool isCycle(Graph MST);
 
 	//Helper to test cyclicity
-	void DFS_test_cycle(Graph MST,int s);
+	bool DFS_test_cycle(Graph MST,int s,int parent);
 
 	//discovery array - gives time at which a vertex was discovered
 	int discovery[MAX];

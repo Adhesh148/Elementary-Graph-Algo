@@ -3,7 +3,7 @@
 
 bool comparePairs(const std::pair<pair<int,int>,int>& lhs, const std::pair<pair<int,int>,int>& rhs)
 {
-  return lhs.second > rhs.second;
+  return lhs.second < rhs.second;		// Change sign to get MAX_WEIGHT_SPAN_TREE
 }
 
 // Find MST in an undirected connected graph
@@ -52,32 +52,31 @@ void Graph:: MST_Kruskal()
 //Checks if given Graph contains cycle.
 bool Graph:: isCycle(Graph MST)
 {	
-	cycle=0;
 	fill(visit,visit+cnt_vertices,0);
-	fill(parent,parent+cnt_vertices,-1);
 	for(int i=0;i<cnt_vertices;++i)
 		if(visit[i] == 0)
-			DFS_test_cycle(MST,i);
-
-	if(cycle ==0)
-		return 0;
-	return 1;
+			if(DFS_test_cycle(MST,i,-1) == 1)
+				return 1;
+	return 0;
 }
 
-void Graph:: DFS_test_cycle(Graph MST,int s)
+bool Graph:: DFS_test_cycle(Graph MST,int s,int parent)
 {
 	visit[s] = 1;
 	for(int i=0;i<cnt_vertices;++i)
 	{
 		if(MST.adjMatrix[s][i]!=0)
 		{
-			parent[i] =s;
-			if(visit[i] == 0 && parent[s]!=i)
-				DFS_test_cycle(MST,i);
-			else if(visit[i] == 1 && parent[s]!=i)
-				++cycle;
+			if(visit[i] == 0)
+			{
+				if(DFS_test_cycle(MST,i,s) == 1)
+					return 1;
+			}
+			else if(parent!=i)
+				return 1;
 		}
 	}
+	return 0;
 }
 
 

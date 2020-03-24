@@ -17,7 +17,8 @@ Graph::Graph(Edge edges[],int n,int m,int directed)	// 0 => undirected, 1=> dire
 		fill(adjMatrix[i],adjMatrix[i]+n,0);
 	}
 
-	AddEdge(edges,m,directed);
+	if(edges!=NULL)
+		AddEdge(edges,m,directed);
 }
 
 void Graph:: AddEdge(Edge edges[],int m,int directed)
