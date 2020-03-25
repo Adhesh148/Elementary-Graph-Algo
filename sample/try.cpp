@@ -146,3 +146,21 @@ void SortNeighbors(vector<vector<int>> &neighbors)
 		}
 	}
 } 
+
+
+LPATH DAG
+
+for(int i=0;i<cnt_vertices;++i)
+	{
+		if(dist[i] == NINF)
+			cout << i<<" INF"<<endl;
+		else
+		{
+			if(dist[i]>max_d)
+			{
+				max_d = dist[i];
+				max_v = i;
+			}
+			cout << i<<" "<<dist[i]<<endl;
+		}
+	}

@@ -174,7 +174,25 @@ void Graph:: findPath(int u,int v,Graph bfs_tree,queue<int> path,Graph* G)
 	visit[u] = 0;
 }
 
-void Graph:: LPATH_DAG(int s) 	// FOR DAG.
+void Graph::LPATH_DAG()
+{
+	int lpath =-1,u,v;
+	for(int i=0;i<cnt_vertices;++i)
+	{
+		pair<int,int> max;
+		max = LPATH_DAG_util(i);
+		if(max.second>lpath)
+		{
+			u = i;
+			lpath = max.second;
+			v = max.first;
+		}
+	}
+
+	cout << "LONGEST PATH IN THE DAG IS FROM "<<u<<" TO "<<v<<" OF LENGTH "<<lpath<<endl;
+}
+
+pair<int,int> Graph:: LPATH_DAG_util(int s) 	// FOR DAG.
 {
 	stack<int> Stack;
 	int dist[cnt_vertices];
@@ -194,36 +212,23 @@ void Graph:: LPATH_DAG(int s) 	// FOR DAG.
 		}
 	}
 
-	cout << "LPATH from "<<s<<" to"<<endl;
+	int max_v,max_d;
 	for(int i=0;i<cnt_vertices;++i)
 	{
-		if(dist[i] == NINF)
-			cout << i<<" INF"<<endl;
-		else
-			cout << i<<" "<<dist[i]<<endl;
-	}
-
-	/*
-	//Find the LPATH - find vertex with max LPATH and findPATH for the source and that vertex
-	Edge tree_edges[1];
-	Graph tree({},cnt_vertices,0,1);
-	for(int i=0;i<cnt_vertices;++i)
-	{
-		for(int j=0;j<cnt_vertices;++j)
-		{	
-			tree_edges[0].u = i;
-			tree_edges[0].v = j;
-			tree_edges[0].w = adjMatrix[i][j];
-			if(adjMatrix[i][j]!=0)
-				tree_edges[0].w = 1;
-			tree.AddEdge(tree_edges,1,1);
+		if(dist[i] != NINF && dist[i]>max_d)
+		{
+				max_d = dist[i];
+				max_v = i;
 		}
 	}
 
-	fill(visit,visit+cnt_vertices,0);
-	queue<int> path;
-	findPath(1,4,tree,path);
-	*/
+	pair<int,int> max;
+	max.first = max_v;
+	max.second = max_d;
+
+	return max;
+
+
 }
 
 void Graph:: topologicalSort(stack<int> &Stack)
@@ -315,7 +320,7 @@ void Graph:: MAX_WEIGHT_MST()
 
 	Edge MST_edges[1];
 	int iter =0,mst_weight=0;
-	
+
 	while(MST.cnt_edges!=(cnt_vertices-1))
 	{
 		MST_edges[0].u = v[iter].first.first;

@@ -43,6 +43,9 @@ private:
 
 	bool isConnected(Graph G);
 
+	// Helper function for LAPTH for DAG
+	pair<int,int> LPATH_DAG_util(int s);
+
 	//discovery array - gives time at which a vertex was discovered
 	int discovery[MAX];
 
@@ -138,7 +141,7 @@ public:
 	//Returns SPATH from s to each of other vertices. // flag=0 => unweighted && flag =1 => weighted
 	void BFS_SPATH(int s,int flag);
 
-	void LPATH_DAG(int s);
+	void LPATH_DAG();
 
 	void LPATH_TREE();
 
