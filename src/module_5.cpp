@@ -137,3 +137,92 @@ void Graph:: MST_Prim()
 	MST.PrintGraph();
 	cout << mst_weight<<endl;
 }
+
+bool compareDesc(const std::pair<pair<int,int>,int>& lhs, const std::pair<pair<int,int>,int>& rhs)
+{
+  return lhs.second > rhs.second;		// Change sign to get MAX_WEIGHT_SPAN_TREE
+}
+
+// Reverse Delete Algo
+
+// HELPER FUNCTIONS FOR MST_YOURALGO() : CHECKING IF GRAPH IS CONNECTED & CALLING DFS FOR IT
+bool Graph:: isConnected(Graph G)
+{
+	fill(visit,visit+G.cnt_vertices,0);
+	DFS(G,0);
+	for(int i=0;i<G.cnt_vertices;++i)
+	{
+		if(visit[i] == 0)
+		{
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
+void Graph:: DFS(Graph G,int s)
+{
+	visit[s] = 1;
+	for(int i=0;i<G.cnt_vertices;++i)
+		if(G.adjMatrix[s][i] != 0 && visit[i] == 0)
+			DFS(G,i);
+}
+
+void Graph:: MST_youralgo()
+{
+
+	Graph MST(NULL,cnt_vertices,cnt_edges,0);	// undirected MST
+
+	vector<pair<pair<int,int>,int>> v(cnt_edges);		// Make pairs of ((u,v),w), then sort by w.
+	int cnt = 0;
+
+	for(int i=0;i<cnt_vertices;++i)
+	{	
+		for(int j=0;j<i;++j)						// Considering only one half of adjMatrix since it is an undirected graph
+		{
+			if(adjMatrix[i][j] !=0)			 
+			{
+				v[cnt].first = make_pair(i,j);
+				v[cnt++].second = adjMatrix[i][j];
+			}
+		}
+	}
+
+	sort(v.begin(),v.end(),compareDesc);
+
+	for(int i=0;i<cnt_vertices;++i)
+		for(int j=0;j<cnt_vertices;++j)
+			MST.adjMatrix[i][j] = adjMatrix[i][j];
+
+	int i=0,j=0,iter =0,mst_weight=0,wt;
+	MST.cnt_edges  = cnt_edges;
+	MST.cnt_vertices = cnt_vertices;
+	while(MST.cnt_edges!=(MST.cnt_vertices-1))
+	{
+		i = v[iter].first.first;
+		j = v[iter].first.second;
+		wt = v[iter].second;
+		MST.adjMatrix[i][j] = 0;
+		MST.adjMatrix[j][i] = 0;
+
+		if(isConnected(MST) == 0)
+		{
+			MST.adjMatrix[i][j] = wt;
+			MST.adjMatrix[j][i] = wt;
+		}
+		else
+			MST.cnt_edges--;
+		++iter;
+	}
+
+	for(int i=0;i<MST.cnt_vertices;++i)
+		for(int j=0;j<i;++j)
+			mst_weight = mst_weight + MST.adjMatrix[i][j];
+
+	MST.PrintGraph();
+	cout << mst_weight<<endl;
+}
+
+
+

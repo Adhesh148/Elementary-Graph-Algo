@@ -315,6 +315,7 @@ void Graph:: MAX_WEIGHT_MST()
 
 	Edge MST_edges[1];
 	int iter =0,mst_weight=0;
+	
 	while(MST.cnt_edges!=(cnt_vertices-1))
 	{
 		MST_edges[0].u = v[iter].first.first;

@@ -38,6 +38,11 @@ private:
 	//Helper to test cyclicity
 	bool DFS_test_cycle(Graph MST,int s,int parent);
 
+	//Helper Functions for MST_youralgo()
+	void DFS(Graph G,int s);
+
+	bool isConnected(Graph G);
+
 	//discovery array - gives time at which a vertex was discovered
 	int discovery[MAX];
 
@@ -156,5 +161,7 @@ public:
 	void MST_Kruskal();
 
 	void MST_Prim();
+
+	void MST_youralgo();
 
 };

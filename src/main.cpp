@@ -39,7 +39,7 @@ int main()
 	//graph.BFS_SPATH(1,0);			//flag = 0 => unweighted graph(wts = 1) && flag = 1 => weighted graph
 	//graph.LPATH_DAG(1);			// *check if ip is dag (optional)
 	//graph.LPATH_TREE();			// *add conditional check for tree (optional)
-	graph.MAX_WEIGHT_MST();
+	//graph.MAX_WEIGHT_MST();
 
 	//--------Module - 4------------//
 	
@@ -51,6 +51,7 @@ int main()
 
 	//graph.MST_Kruskal();
 	//graph.MST_Prim();
+	//graph.MST_youralgo();
 
 	//graph.PrintGraph();
 
